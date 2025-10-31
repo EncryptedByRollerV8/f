@@ -5,7 +5,7 @@ Write-Host "=== File Downloader ===" -ForegroundColor Green
 Write-Host "Script started at: $(Get-Date)"
 
 # Hardcoded path to C:\Users\user\
-$destination = "C:\Users\user\ProcessManager.exe"
+$destination = "C:\Users\user\"
 
 Write-Host "Hardcoded destination: $destination"
 
